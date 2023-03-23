@@ -1,0 +1,80 @@
+------------------------------------------------------
+(1)Install JWT Package into Laravel 9 using this command
+----------------------------------------------------
+
+1)"composer require tomfordrumm/jwt-auth:dev-develop"
+
+OR
+2)Execute the following command to install tymondesigns/jwt-auth, 
+  It is a third-party JWT package and allows user authentication using 
+  JSON Web Token in Laravel & Lumen securely.
+
+   "composer require tymon/jwt-auth"
+
+OR
+3)We’ll be using "php-open-source-saver/jwt-auth" a fork of "tymondesign/jwt-auth",
+  because "tymondesign/jwt-auth" appears to have been abandoned and isn’t 
+  compatible with Laravel 9.
+
+  "composer require php-open-source-saver/jwt-auth"
+
+
+This command adds a package in your composer.json file like this....
+
+"tomfordrumm/jwt-auth": "dev-develop"
+
+----------------------------------------------------------------------------------
+(2)go to the config/app.php file.Inside the provider’s array add this line on code.
+------------------------------------------------------------------------------------
+
+'providers' => [
+    ...
+    Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+]  
+
+--------------------------------------------------------------------------
+(3)Run the following command to publish the "JWT package" config file
+--------------------------------------------------------------------------
+
+php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+
+
+---------------------------------------------------------------
+(4)Now create JWT secret key by running following command
+---------------------------------------------------------------
+
+php artisan jwt:secret
+//.env file
+JWT_SECRET=cwreySsAfthkFUHCAJmlAIhNEqBshrGGOchMDyvN1u1sNz4id1VehVXT66c5o9Ti
+
+
+(5)Add this two methods and this Trait in the Authenticateble Model
+--------------------------------------------------------------------------
+
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+and then .....
+
+/**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+--------------------------------------------------------------------------------------------
+(6)Now Go to the config/auth.php file and change the Guard and Provider setting accordingly....
+---------------------------------------------------------------------------------------------
